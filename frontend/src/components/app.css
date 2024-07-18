@@ -1,0 +1,79 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .container {
+    padding: 7rem;
+    display: flex;
+    justify-content: center; /* Center the form-container */
+  }
+  
+  .form-container {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    border: 1px solid rgb(104, 103, 103);
+    padding: 2rem; /* Add padding to ensure content is not touching the border */
+    width: 80%; /* Ensure the form-container takes full width */
+    max-width: 1200px; /* Optional: Set a max-width to keep it from stretching too much */
+  }
+  
+  .box {
+    padding: 2rem;
+    width: 50%; /* Adjust the width to ensure two boxes fit perfectly */
+  }
+  
+  img {
+    background-position: center;
+    background-size: cover;
+    height: 60vh;
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  .form {
+    height: 100%;
+    padding: 0 5rem;
+    text-align: center;
+  }
+  
+  .text h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .inp {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+  
+  .inp label {
+    font-size: 1.2rem;
+    text-align: left;
+  }
+  
+  .inp input {
+    padding: 0.5rem;
+    border: 2px solid rgb(63, 63, 63);
+    border-radius: 50px;
+    font-size: 1.1rem;
+  }
+  
+  .btn {
+    text-align: center;
+  }
+  
+  .btn button {
+    color: white;
+    background-color: black;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 3rem;
+    border: none;
+  }
+  
