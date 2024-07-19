@@ -5,13 +5,13 @@ import { NavLink, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 function Login() {
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8082/login', { username, password })
+        axios.post('http://localhost:8082/login', { email, password }) 
             .then(result => {
                 console.log(result);
                 if (result.data.status === "Success") {
@@ -38,8 +38,9 @@ function Login() {
                     <div className="form">
                         <form action="" onSubmit={handleSubmit}>
                             <div className="inp">
-                                <label htmlFor="">Username</label>
-                                <input type="text" name="username" placeholder="Enter your Username" required onChange={(e) => setUsername(e.target.value)} />
+                                <label htmlFor="">Email</label>
+                                <input type="email" name="email"  placeholder="Enter your Email"  required  onChange={(e) => setEmail(e.target.value)} 
+                                />
                             </div>
                             <div className="inp">
                                 <label htmlFor="">Password</label>

@@ -40,21 +40,28 @@ app.post('/register', (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     try {
-        let user = await UserModel.findOne({ username });
+        // Check if user exists in the UserModel collection
+        let user = await UserModel.findOne({ email });
         if (user) {
             if (user.password === password) {
+                // Update the lastLogin field for users
+                user.lastLogin = new Date();  // Set the current date and time
+                await user.save();  // Save the updated user document
+                
                 return res.json({ status: "Success", userType: "user" });
             } else {
                 return res.json({ status: "the password is incorrect" });
             }
         }
 
-        user = await AdminModel.findOne({ username });
+        // Check if user exists in the AdminModel collection
+        user = await AdminModel.findOne({ email });
         if (user) {
             if (user.password === password) {
+                // No need to update the lastLogin field for admins
                 return res.json({ status: "Success", userType: "admin" });
             } else {
                 return res.json({ status: "the password is incorrect" });
@@ -67,15 +74,33 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// New endpoint to get all users
+// Add this route to your Express server code
+app.post('/logout', async (req, res) => {
+    const { email } = req.body; // Adjust this if you're sending different data
+
+    try {
+        const user = await UserModel.findOne({ email });
+        if (user) {
+            user.lastLogout = new Date(); // Add lastLogout field to your schema
+            await user.save();
+            return res.json({ status: "Success" });
+        }
+        return res.status(404).json({ status: "User not found" });
+    } catch (err) {
+        return res.status(500).json({ error: 'Failed to update logout time', details: err });
+    }
+});
+
+
 app.get('/users', async (req, res) => {
     try {
-        const users = await UserModel.find();
+        const users = await UserModel.find({}, 'name email username lastLogin'); // Include only the fields you need
         res.json(users);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch users', details: err });
     }
 });
+
 
 // Get all admins
 app.get('/admins', async (req, res) => {
@@ -86,6 +111,10 @@ app.get('/admins', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch admins', details: err });
     }
 });
+
+app.get("/", (req, res) => {
+    res.json("Hello");
+})
 
 app.listen(8082, () => {
     console.log("server is running on port 8082");
