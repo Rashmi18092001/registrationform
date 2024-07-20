@@ -17,7 +17,7 @@ function AdminDashboard() {
 
     return (
         <div>
-            <h1>Admin Dashboard</h1>
+            <h1 className='head'>Admin Dashboard</h1>
             <table>
                 <thead>
                     <tr>

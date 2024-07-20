@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './app.css';
 
 function UserDashboard() {
     const navigate = useNavigate();
@@ -29,8 +30,13 @@ function UserDashboard() {
 
     return (
         <>
-            <h1>User Dashboard</h1>
-            <button onClick={handleLogout}>Logout</button>
+            
+
+                <h1 className='head'>User Dashboard</h1>
+                <div className="btn-log">
+                    <button className='logout' onClick={handleLogout}>Logout</button>
+                </div>
+
         </>
     );
 }
