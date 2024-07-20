@@ -11,10 +11,11 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8082/login', { email, password }) 
+        axios.post('http://localhost:8082/login', { email, password })
             .then(result => {
                 console.log(result);
                 if (result.data.status === "Success") {
+                    localStorage.setItem('email', email); // Store email in local storage
                     if (result.data.userType === "user") {
                         navigate('/user');
                     } else {
@@ -39,8 +40,7 @@ function Login() {
                         <form action="" onSubmit={handleSubmit}>
                             <div className="inp">
                                 <label htmlFor="">Email</label>
-                                <input type="email" name="email"  placeholder="Enter your Email"  required  onChange={(e) => setEmail(e.target.value)} 
-                                />
+                                <input type="email" name="email" placeholder="Enter your Email" required onChange={(e) => setEmail(e.target.value)} />
                             </div>
                             <div className="inp">
                                 <label htmlFor="">Password</label>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './app.css'
 
 function AdminDashboard() {
     const [users, setUsers] = useState([]);
@@ -24,6 +25,7 @@ function AdminDashboard() {
                         <th>Email</th>
                         <th>Username</th>
                         <th>Last Login</th>
+                        <th>Last Logout</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,6 +35,7 @@ function AdminDashboard() {
                             <td>{user.email}</td>
                             <td>{user.username}</td>
                             <td>{user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Never'}</td>
+                            <td>{user.lastLogout ? new Date(user.lastLogout).toLocaleString() : 'Never'}</td>
                         </tr>
                     ))}
                 </tbody>

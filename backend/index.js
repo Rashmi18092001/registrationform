@@ -51,6 +51,15 @@ app.post("/login", async (req, res) => {
                 user.lastLogin = new Date();  // Set the current date and time
                 await user.save();  // Save the updated user document
                 
+                // Log user data
+                console.log('User logged in:', {
+                    name: user.name,
+                    email: user.email,
+                    username: user.username,
+                    lastLogin: user.lastLogin,
+                    lastLogout: user.lastLogout
+                });
+
                 return res.json({ status: "Success", userType: "user" });
             } else {
                 return res.json({ status: "the password is incorrect" });
@@ -61,7 +70,6 @@ app.post("/login", async (req, res) => {
         user = await AdminModel.findOne({ email });
         if (user) {
             if (user.password === password) {
-                // No need to update the lastLogin field for admins
                 return res.json({ status: "Success", userType: "admin" });
             } else {
                 return res.json({ status: "the password is incorrect" });
@@ -74,20 +82,37 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// Add this route to your Express server code
 app.post('/logout', async (req, res) => {
-    const { email } = req.body; // Adjust this if you're sending different data
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ status: "Error", message: "Email is required" });
+    }
 
     try {
-        const user = await UserModel.findOne({ email });
+        // Find the user by email and update the lastLogout field
+        const user = await UserModel.findOneAndUpdate(
+            { email },
+            { lastLogout: new Date() },
+            { new: true }
+        );
+
         if (user) {
-            user.lastLogout = new Date(); // Add lastLogout field to your schema
-            await user.save();
-            return res.json({ status: "Success" });
+            // Log user data
+            console.log('User logged out:', {
+                name: user.name,
+                email: user.email,
+                username: user.username,
+                lastLogin: user.lastLogin,
+                lastLogout: user.lastLogout
+            });
+
+            return res.json({ status: "Success", message: "Logout time updated", user });
+        } else {
+            return res.json({ status: "User not found" });
         }
-        return res.status(404).json({ status: "User not found" });
     } catch (err) {
-        return res.status(500).json({ error: 'Failed to update logout time', details: err });
+        return res.status(500).json({ status: "Error", message: 'Failed to update logout time', details: err });
     }
 });
 
@@ -100,7 +125,6 @@ app.get('/users', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch users', details: err });
     }
 });
-
 
 // Get all admins
 app.get('/admins', async (req, res) => {
