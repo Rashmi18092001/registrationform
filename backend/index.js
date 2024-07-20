@@ -18,7 +18,6 @@ mongoose.connect("mongodb://127.0.0.1:27017/numetry", {
 });
 
 app.post('/register', (req, res) => {
-    console.log('Request Body:', req.body); // Log the request body for debugging
     const { email, name, username, password } = req.body;
 
     if (!email || !name || !username || !password) {
@@ -51,8 +50,8 @@ app.post("/login", async (req, res) => {
                 user.lastLogin = new Date();  // Set the current date and time
                 await user.save();  // Save the updated user document
                 
-                // Log user data
-                console.log('User logged in:', {
+                 // Log user data
+                 console.log('User logged in:', {
                     name: user.name,
                     email: user.email,
                     username: user.username,
@@ -70,6 +69,7 @@ app.post("/login", async (req, res) => {
         user = await AdminModel.findOne({ email });
         if (user) {
             if (user.password === password) {
+                // No need to update the lastLogin field for admins
                 return res.json({ status: "Success", userType: "admin" });
             } else {
                 return res.json({ status: "the password is incorrect" });
@@ -116,17 +116,15 @@ app.post('/logout', async (req, res) => {
     }
 });
 
-
 app.get('/users', async (req, res) => {
     try {
-        const users = await UserModel.find({}, 'name email username lastLogin'); // Include only the fields you need
+        const users = await UserModel.find({}, 'name email username lastLogin lastLogout'); // Include lastLogout field
         res.json(users);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch users', details: err });
     }
 });
 
-// Get all admins
 app.get('/admins', async (req, res) => {
     try {
         const admins = await AdminModel.find();
